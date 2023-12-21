@@ -10,7 +10,7 @@ const state = {
 const addPartyForm = document.querySelector("#addPartyForm");
 const eventsList = document.querySelector("#events");
 const eventsListItems = document.querySelector("li");
-addPartyForm.addEventListener('submit', addParty);
+addPartyForm.addEventListener('submit', makeParty);
 
 
 // render functions
@@ -32,41 +32,39 @@ async function getParties() {
     }
 };
 
-// add parties function (just for event listener)
-async function addParty(e) {
-    e.preventDefault();
-
-    await makeParty(
-        addPartyForm.name.value,
-        addPartyForm.description.value,
-        addPartyForm.date.value,
-        addPartyForm.location.value
-    );
-};
-
 // create parties function
-async function makeParty(name, description, date, location) {
+async function makeParty(e) {
     try {
-        const response = await fetch(
-            API_URL,
-            {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({name, description, date, location}),
-            }
-        )
-        const json = await response.json();
+    e.preventDefault();
+    let name = document.getElementById("name").value;
+    let description = document.getElementById("description").value;
+    let date = document.getElementById("date").value;
+    let location = document.getElementById("location").value;
+    let data = {
+        name,
+        description,
+        date,
+        location,
+    };
 
-        if (json.error) {
-            throw new Error(json.message);
-        };
+    console.log(data);
 
-        render();
+    const response = await fetch(
+        API_URL,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        }
+    );
+    const json = await response.json();
+    return json;
+
     } catch(error) {
         console.error(error);
-    }
+    };
 };
 
 // delete parties function
