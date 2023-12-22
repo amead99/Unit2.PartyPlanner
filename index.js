@@ -40,14 +40,13 @@ async function makeParty(e) {
     let description = document.getElementById("description").value;
     let date = document.getElementById("date").value;
     let location = document.getElementById("location").value;
+
     let data = {
         name,
         description,
         date,
         location,
     };
-
-    console.log(data);
 
     const response = await fetch(
         API_URL,
@@ -75,7 +74,7 @@ async function deleteParty(id) {
         });
 
         if (!response.ok) {
-            throw new Error('This item could not be delete.');
+            throw new Error('This item could not be deleted.');
         }
 
         render();
@@ -112,4 +111,4 @@ function renderParties() {
         return eventItem;
     });
     eventsList.replaceChildren(...eventItems);
-}
+};
